@@ -25,6 +25,134 @@
                 ]
             }
         },
+        "python-dev-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Python development patterns and best practices",
+            "promptTriggers": {
+                "keywords": [
+                    "python",
+                    "pytest",
+                    "pip",
+                    "poetry",
+                    "pyproject.toml",
+                    "virtualenv",
+                    "venv",
+                    "conda",
+                    "type hints",
+                    "mypy",
+                    "pydantic",
+                    "dataclass",
+                    "async python",
+                    "asyncio",
+                    "python class",
+                    "python function",
+                    "python module"
+                ],
+                "intentPatterns": [
+                    "(create|add|implement|build|write).*?python",
+                    "(create|add|implement).*?(class|function|module).*?\\.py",
+                    "(how to|best practice).*?python",
+                    "(test|pytest).*?python",
+                    "(type|typing).*?python"
+                ]
+            },
+            "fileTriggers": {
+                "pathPatterns": [
+                    "**/*.py",
+                    "**/pyproject.toml",
+                    "**/setup.py",
+                    "**/setup.cfg",
+                    "**/requirements*.txt",
+                    "**/Pipfile",
+                    "**/poetry.lock"
+                ],
+                "pathExclusions": [
+                    "**/__pycache__/**",
+                    "**/.venv/**",
+                    "**/venv/**",
+                    "**/.tox/**",
+                    "**/build/**",
+                    "**/dist/**",
+                    "**/*.egg-info/**"
+                ],
+                "contentPatterns": [
+                    "^import ",
+                    "^from .* import",
+                    "^def ",
+                    "^class ",
+                    "^async def ",
+                    "@dataclass",
+                    "@pytest",
+                    "if __name__"
+                ]
+            }
+        },
+        "cpp-dev-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "C++ development patterns and best practices",
+            "promptTriggers": {
+                "keywords": [
+                    "c++",
+                    "cpp",
+                    "cmake",
+                    "CMakeLists",
+                    "header file",
+                    "hpp",
+                    "smart pointer",
+                    "unique_ptr",
+                    "shared_ptr",
+                    "RAII",
+                    "template",
+                    "STL",
+                    "std::",
+                    "googletest",
+                    "gtest",
+                    "catch2",
+                    "memory management",
+                    "move semantics",
+                    "const correctness"
+                ],
+                "intentPatterns": [
+                    "(create|add|implement|build|write).*?(c\\+\\+|cpp|class|header)",
+                    "(how to|best practice).*?(c\\+\\+|cpp|cmake)",
+                    "(compile|build|link).*?(c\\+\\+|cpp)",
+                    "(memory|pointer|allocation).*?(c\\+\\+|cpp)",
+                    "(template|generic).*?(c\\+\\+|cpp)"
+                ]
+            },
+            "fileTriggers": {
+                "pathPatterns": [
+                    "**/*.cpp",
+                    "**/*.hpp",
+                    "**/*.h",
+                    "**/*.cc",
+                    "**/*.cxx",
+                    "**/*.hxx",
+                    "**/CMakeLists.txt",
+                    "**/*.cmake"
+                ],
+                "pathExclusions": [
+                    "**/build/**",
+                    "**/cmake-build-*/**",
+                    "**/third_party/**",
+                    "**/external/**"
+                ],
+                "contentPatterns": [
+                    "^#include",
+                    "^namespace ",
+                    "std::",
+                    "class .* \\{",
+                    "template.*<",
+                    "unique_ptr",
+                    "shared_ptr",
+                    "cmake_minimum_required"
+                ]
+            }
+        },
         "backend-dev-guidelines": {
             "type": "domain",
             "enforcement": "suggest",
@@ -139,7 +267,7 @@
                     "@material-ui/core"
                 ]
             },
-            "blockMessage": "⚠️ BLOCKED - Frontend Best Practices Required\n\n📋 REQUIRED ACTION:\n1. Use Skill tool: 'frontend-dev-guidelines'\n2. Review MUI v7 patterns (Grid uses size={{}} prop, NOT xs/sm props)\n3. Check React/TypeScript best practices\n4. Use proper styling patterns\n5. Then retry this edit\n\nReason: Enforce MUI v7 compatibility and React best practices\nFile: {file_path}\n\n💡 TIP: Add '// @skip-validation' comment to skip future checks",
+            "blockMessage": "BLOCKED - Frontend Best Practices Required\n\nREQUIRED ACTION:\n1. Use Skill tool: 'frontend-dev-guidelines'\n2. Review MUI v7 patterns (Grid uses size={{}} prop, NOT xs/sm props)\n3. Check React/TypeScript best practices\n4. Use proper styling patterns\n5. Then retry this edit\n\nReason: Enforce MUI v7 compatibility and React best practices\nFile: {file_path}\n\nTIP: Add '// @skip-validation' comment to skip future checks",
             "skipConditions": {
                 "sessionSkillUsed": true,
                 "fileMarkers": [
@@ -233,9 +361,14 @@
             "low": "Optional - Trigger only for explicit matches"
         },
         "customization": {
-            "pathPatterns": "Adjust to match your project structure (blog-api, auth-service, etc.)",
+            "pathPatterns": "Adjust to match your project structure",
             "keywords": "Add domain-specific terms relevant to your project",
             "intentPatterns": "Use regex for flexible user intent matching"
+        },
+        "directory_structure": {
+            "python": "Python-specific skills in .claude/skills/python/",
+            "cpp": "C++ specific skills in .claude/skills/cpp/",
+            "shared": "Language-agnostic skills in .claude/skills/shared/"
         }
     }
 }
