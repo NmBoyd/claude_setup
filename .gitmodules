@@ -1,0 +1,3 @@
+[submodule "3rd_party/awesome-claude-code-plugins"]
+	path = 3rd_party/awesome-claude-code-plugins
+	url = https://github.com/NmBoyd/awesome-claude-code-plugins.git
