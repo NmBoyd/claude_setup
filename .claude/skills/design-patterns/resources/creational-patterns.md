@@ -1,5 +1,17 @@
 # Creational Design Patterns
 
+## Table of Contents
+
+- [Factory Method](#factory-method)
+- [Builder](#builder)
+- [Singleton (Use Sparingly!)](#singleton-use-sparingly)
+- [Abstract Factory](#abstract-factory)
+- [Prototype](#prototype)
+- [Quick Reference](#quick-reference)
+- [Related Resources](#related-resources)
+
+---
+
 Patterns that deal with object creation mechanisms.
 
 ---

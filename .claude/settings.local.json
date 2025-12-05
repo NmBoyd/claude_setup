@@ -1,9 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(for file in /root/git/claude-code-infrastructure-showcase/.claude/skills/shared/frontend-dev-guidelines/resources/*.md)",
+      "Bash(for file in /root/git/claude-code-infrastructure-showcase/.claude/skills/frontend-dev-guidelines/resources/*.md)",
       "Bash(done)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(python3:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []

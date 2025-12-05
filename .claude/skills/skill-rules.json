@@ -583,9 +583,9 @@
             "intentPatterns": "Use regex for flexible user intent matching"
         },
         "directory_structure": {
-            "python": "Python-specific skills in .claude/skills/python/",
-            "cpp": "C++ specific skills in .claude/skills/cpp/",
-            "shared": "Language-agnostic skills in .claude/skills/shared/"
+            "location": "All skills in .claude/skills/{skill-name}/",
+            "naming": "Use descriptive hyphenated names (e.g., python-dev-guidelines, cpp-dev-guidelines)",
+            "resources": "Optional resources/ subfolder for reference files"
         }
     }
 }

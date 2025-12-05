@@ -1,5 +1,23 @@
 # C++ Idioms Guide
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Quick Reference](#quick-reference)
+- [RAII (Resource Acquisition Is Initialization)](#raii-resource-acquisition-is-initialization)
+- [PIMPL (Pointer to Implementation)](#pimpl-pointer-to-implementation)
+- [CRTP (Curiously Recurring Template Pattern)](#crtp-curiously-recurring-template-pattern)
+- [Copy-and-Swap Idiom](#copy-and-swap-idiom)
+- [SFINAE (Substitution Failure Is Not An Error)](#sfinae-substitution-failure-is-not-an-error)
+- [Tag Dispatch](#tag-dispatch)
+- [Type Erasure](#type-erasure)
+- [NVI (Non-Virtual Interface)](#nvi-non-virtual-interface)
+- [Attorney-Client Idiom](#attorney-client-idiom)
+- [Quick Reference Table](#quick-reference-table)
+- [Related Resources](#related-resources)
+
+---
+
 ## Overview
 
 Essential C++ idioms for writing robust, maintainable, and efficient code. These patterns solve common problems and represent accumulated wisdom from the C++ community.
@@ -673,4 +691,4 @@ public:
 - [More C++ Idioms](https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms)
 - [cpp-dev-guidelines SKILL.md](../SKILL.md) - Main C++ skill
 - [style-guide.md](style-guide.md) - C++ style guide
-- [design-patterns](../../shared/design-patterns/SKILL.md) - Design patterns
+- [design-patterns](../../design-patterns/SKILL.md) - Design patterns

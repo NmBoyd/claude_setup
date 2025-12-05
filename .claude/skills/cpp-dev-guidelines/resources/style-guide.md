@@ -1,5 +1,22 @@
 # C++ Style Guide
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Severity Levels](#severity-levels)
+- [A. TODO Comments, Temporary Code, and Debug Code](#a-todo-comments-temporary-code-and-debug-code)
+- [B. std::string_view](#b-stdstring_view)
+- [C. [[nodiscard]]](#c-nodiscard)
+- [D. Include Statement Dividers](#d-include-statement-dividers)
+- [E. Apollo YAML Configuration Files](#e-apollo-yaml-configuration-files)
+- [F. assert vs static_assert](#f-assert-vs-static_assert)
+- [G. Personal/Team Configuration Files](#g-personalteam-configuration-files)
+- [H. Error Chaining with Tristate Operator](#h-error-chaining-with-tristate-operator)
+- [Quick Reference](#quick-reference)
+- [Related Resources](#related-resources)
+
+---
+
 ## Overview
 
 We follow the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) with the additional rules documented below.

@@ -1,5 +1,18 @@
 # Behavioral Design Patterns
 
+## Table of Contents
+
+- [Strategy](#strategy)
+- [Observer](#observer)
+- [Command](#command)
+- [State](#state)
+- [Template Method](#template-method)
+- [Chain of Responsibility](#chain-of-responsibility)
+- [Quick Reference](#quick-reference)
+- [Related Resources](#related-resources)
+
+---
+
 Patterns that deal with object communication and responsibility.
 
 ---

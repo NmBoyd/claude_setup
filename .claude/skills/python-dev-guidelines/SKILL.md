@@ -7,7 +7,21 @@ description: Python development guidelines for modern Python projects. Use when 
 
 ## Purpose
 
-Establish consistency and best practices for Python development, covering modern Python 3.10+ patterns, type safety, testing, and project organization.
+Establish consistency and best practices for Python development, covering modern Python 3.12+ patterns, type safety, testing, and project organization.
+
+---
+
+## Standards Overview
+
+| Category | Standard |
+|----------|----------|
+| **Python** | 3.12+, FastAPI, async/await preferred |
+| **Formatting** | ruff (96-char lines, double quotes, sorted imports) |
+| **Typing** | Strict (Pydantic v2 models preferred); `from __future__ import annotations` |
+| **Naming** | `snake_case` (functions/variables), `PascalCase` (classes), `SCREAMING_SNAKE` (constants) |
+| **Error Handling** | Typed exceptions; context managers for resources |
+| **Documentation** | Google-style docstrings for public functions/classes |
+| **Testing** | Separate test files matching source file patterns |
 
 ## When to Use This Skill
 
@@ -17,7 +31,7 @@ Automatically activates when working on:
 - Setting up Python projects (pyproject.toml, setup.py)
 - Writing tests with pytest
 - Working with type hints and mypy
-- Async/await patterns
+- Async/await patterns with FastAPI
 - Package management (pip, poetry, conda)
 
 ---
@@ -26,21 +40,24 @@ Automatically activates when working on:
 
 ### New Python Project Checklist
 
+- [ ] **Python version**: 3.12+ specified in `.python-version`
 - [ ] **Project structure**: src layout or flat layout
-- [ ] **pyproject.toml**: Modern packaging config
-- [ ] **Type hints**: All public APIs typed
-- [ ] **Tests**: pytest with fixtures
-- [ ] **Linting**: ruff or flake8 + black
+- [ ] **pyproject.toml**: Modern packaging config with ruff
+- [ ] **Type hints**: Strict typing with `from __future__ import annotations`
+- [ ] **Tests**: pytest with fixtures, matching source patterns
+- [ ] **Linting**: ruff (96-char lines, double quotes, sorted imports)
 - [ ] **Virtual env**: venv, poetry, or conda
-- [ ] **Documentation**: Docstrings (Google or NumPy style)
+- [ ] **Documentation**: Google-style docstrings
+- [ ] **Exceptions**: Hierarchical exceptions in `exceptions.py`
 
 ### New Module Checklist
 
-- [ ] Module docstring at top
+- [ ] `from __future__ import annotations` at top
+- [ ] Module docstring (Google-style)
 - [ ] Type hints on all public functions
 - [ ] `__all__` export list (if applicable)
 - [ ] Unit tests in `tests/` mirror structure
-- [ ] Error handling with custom exceptions
+- [ ] Error handling with typed exceptions from `exceptions.py`
 
 ---
 
@@ -53,6 +70,7 @@ project/
 ├── src/
 │   └── mypackage/
 │       ├── __init__.py
+│       ├── exceptions.py     # Hierarchical typed exceptions
 │       ├── core/
 │       │   ├── __init__.py
 │       │   └── module.py
@@ -63,12 +81,13 @@ project/
 ├── tests/
 │   ├── conftest.py           # Shared fixtures
 │   ├── test_core/
-│   │   └── test_module.py
+│   │   └── test_module.py    # Mirrors src/mypackage/core/module.py
 │   └── test_utils/
-│       └── test_helpers.py
+│       └── test_helpers.py   # Mirrors src/mypackage/utils/helpers.py
 ├── pyproject.toml
+├── ruff.toml                 # ruff config (96-char, double quotes)
 ├── README.md
-└── .python-version           # pyenv version
+└── .python-version           # 3.12+
 ```
 
 ### Alternative: Flat Layout (smaller projects)
@@ -88,54 +107,106 @@ project/
 
 ## Core Principles (7 Key Rules)
 
-### 1. Type Everything Public
+### 1. Type Everything Public (Strict Typing)
 
 ```python
+from __future__ import annotations  # Always at top of file
+
 # ❌ NEVER: Untyped public functions
 def process_data(data):
     return data.upper()
 
 # ✅ ALWAYS: Full type annotations
 def process_data(data: str) -> str:
+    """Process input data.
+
+    Args:
+        data: The input string to process.
+
+    Returns:
+        The processed uppercase string.
+    """
     return data.upper()
 ```
 
-### 2. Use Dataclasses or Pydantic for Data
+### 2. Use Pydantic v2 for Data Models (Preferred)
 
 ```python
-from dataclasses import dataclass
-from typing import Optional
+from __future__ import annotations
+from pydantic import BaseModel, EmailStr, Field
 
-# ✅ Dataclass for simple data containers
-@dataclass
-class User:
+# ✅ Pydantic v2 for validation (preferred)
+class UserCreate(BaseModel):
+    """User creation model with validation."""
+
+    name: str = Field(..., min_length=1, max_length=100)
+    email: EmailStr
+
+class UserResponse(BaseModel):
+    """User response model."""
+
     id: int
     name: str
-    email: Optional[str] = None
+    email: str
 
-# ✅ Pydantic for validation
-from pydantic import BaseModel, EmailStr
+# For simple internal data without validation, dataclasses are acceptable
+from dataclasses import dataclass
 
-class UserCreate(BaseModel):
-    name: str
-    email: EmailStr
+@dataclass
+class InternalConfig:
+    timeout: int = 30
+    retries: int = 3
 ```
 
-### 3. Handle Errors with Custom Exceptions
+### 3. Handle Errors with Typed Hierarchical Exceptions
 
 ```python
-# Define custom exceptions
-class ValidationError(Exception):
+# exceptions.py - Define hierarchical typed exceptions
+from __future__ import annotations
+
+
+class AppError(Exception):
+    """Base exception for application errors."""
+
+    def __init__(self, message: str) -> None:
+        self.message = message
+        super().__init__(message)
+
+
+class ValidationError(AppError):
     """Raised when validation fails."""
+
     pass
 
-class NotFoundError(Exception):
+
+class NotFoundError(AppError):
     """Raised when resource not found."""
+
     pass
 
-# Use them explicitly
-def get_user(user_id: int) -> User:
-    user = db.find(user_id)
+
+class DatabaseError(AppError):
+    """Raised when database operation fails."""
+
+    pass
+
+
+# Usage - catch specific exceptions, not general Exception
+from mypackage.exceptions import ValidationError, NotFoundError
+
+async def get_user(user_id: int) -> User:
+    """Get user by ID.
+
+    Args:
+        user_id: The user's unique identifier.
+
+    Returns:
+        The user object.
+
+    Raises:
+        NotFoundError: If user does not exist.
+    """
+    user = await db.find(user_id)
     if not user:
         raise NotFoundError(f"User {user_id} not found")
     return user
@@ -144,6 +215,9 @@ def get_user(user_id: int) -> User:
 ### 4. Use Context Managers for Resources
 
 ```python
+from __future__ import annotations
+from contextlib import asynccontextmanager, contextmanager
+
 # ❌ NEVER: Manual resource management
 f = open("file.txt")
 data = f.read()
@@ -153,11 +227,10 @@ f.close()
 with open("file.txt") as f:
     data = f.read()
 
-# ✅ Custom context managers
-from contextlib import contextmanager
-
+# ✅ Sync context manager
 @contextmanager
 def database_transaction():
+    """Manage database transaction with automatic cleanup."""
     conn = get_connection()
     try:
         yield conn
@@ -167,6 +240,20 @@ def database_transaction():
         raise
     finally:
         conn.close()
+
+# ✅ Async - use try/finally to ensure cleanup
+@asynccontextmanager
+async def async_db_session():
+    """Manage async database session with cleanup."""
+    session = await create_session()
+    try:
+        yield session
+        await session.commit()
+    except Exception:
+        await session.rollback()
+        raise
+    finally:
+        await session.close()
 ```
 
 ### 5. Prefer Composition Over Inheritance
@@ -224,59 +311,21 @@ def send_email(
 
 ---
 
-## Common Imports
-
-```python
-# Standard library
-from __future__ import annotations
-from typing import Optional, List, Dict, Any, TypeVar, Generic
-from dataclasses import dataclass, field
-from pathlib import Path
-from collections.abc import Callable, Iterator, Sequence
-import logging
-from contextlib import contextmanager
-from functools import lru_cache, wraps
-
-# Type checking only
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from mypackage.models import User
-
-# Async
-import asyncio
-from typing import Coroutine
-
-# Testing
-import pytest
-from unittest.mock import Mock, patch, MagicMock
-```
-
----
-
 ## Type Hints Quick Reference
 
 ```python
-# Basic types
-x: int = 1
-name: str = "hello"
-flag: bool = True
+from __future__ import annotations
+from typing import TypeVar, Generic
+from collections.abc import Callable
+
+# Basic types (Python 3.12+)
 values: list[int] = [1, 2, 3]
 mapping: dict[str, int] = {"a": 1}
+value: str | None = None  # Union syntax
 
-# Optional (can be None)
-from typing import Optional
-value: Optional[str] = None  # or: str | None (3.10+)
-
-# Union types (3.10+)
-result: int | str = get_result()
-
-# Callable
-from collections.abc import Callable
+# Callable and Generics
 handler: Callable[[int, str], bool]
-
-# Generics
-from typing import TypeVar, Generic
-T = TypeVar('T')
+T = TypeVar("T")
 
 class Container(Generic[T]):
     def __init__(self, value: T) -> None:
@@ -287,28 +336,12 @@ class Container(Generic[T]):
 
 ## Testing Patterns
 
-### pytest Fixtures
-
 ```python
-# conftest.py
-import pytest
-from mypackage.models import User
-
-@pytest.fixture
-def sample_user() -> User:
-    return User(id=1, name="Test", email="test@example.com")
-
-@pytest.fixture
-def mock_database(mocker):
-    return mocker.patch("mypackage.db.connection")
-```
-
-### Test Structure
-
-```python
-# test_user_service.py
+# tests/test_user_service.py - mirrors src/mypackage/services/user_service.py
+from __future__ import annotations
 import pytest
 from mypackage.services import UserService
+from mypackage.exceptions import ValidationError
 
 class TestUserService:
     """Tests for UserService."""
@@ -317,14 +350,11 @@ class TestUserService:
         """Should create user with valid data."""
         service = UserService(mock_database)
         user = service.create(name="Test", email="test@example.com")
-
         assert user.name == "Test"
-        mock_database.save.assert_called_once()
 
     def test_create_user_invalid_email_raises(self, mock_database):
         """Should raise ValidationError for invalid email."""
         service = UserService(mock_database)
-
         with pytest.raises(ValidationError, match="invalid email"):
             service.create(name="Test", email="not-an-email")
 ```
@@ -334,36 +364,47 @@ class TestUserService:
 ## Anti-Patterns to Avoid
 
 ❌ Mutable default arguments (`def foo(items=[])`)
-❌ Bare `except:` clauses
+❌ Bare `except:` clauses - catch specific exceptions
+❌ Catching general `Exception` - use typed exceptions
 ❌ `from module import *`
 ❌ Global mutable state
 ❌ Ignoring type checker errors
 ❌ print() instead of logging
 ❌ String concatenation in loops (use join)
 ❌ Not using `if __name__ == "__main__":`
+❌ Missing `from __future__ import annotations`
 
 ---
 
-## Async Patterns
+## Async Patterns (FastAPI Preferred)
 
 ```python
-import asyncio
-from typing import AsyncIterator
+from __future__ import annotations
+from fastapi import FastAPI, HTTPException, status
+from mypackage.exceptions import ValidationError
 
-async def fetch_data(url: str) -> dict:
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            return await response.json()
+app = FastAPI()
 
+# ✅ FastAPI endpoint with proper error handling
+@app.post("/users", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+async def create_user(user: UserCreate) -> UserResponse:
+    """Create a new user."""
+    try:
+        return await user_service.create(user)
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+# ✅ Async error handling with exception chaining (from e)
+async def process_data(data: dict) -> Result:
+    """Process data with proper exception handling."""
+    try:
+        return await do_processing(data)
+    except KeyError as e:
+        raise ValidationError(f"Missing required field: {e}") from e
+
+# ✅ Concurrent operations
 async def process_items(items: list[str]) -> list[dict]:
-    tasks = [fetch_data(item) for item in items]
-    return await asyncio.gather(*tasks)
-
-# Async generator
-async def stream_data() -> AsyncIterator[bytes]:
-    async with aiofiles.open("large.bin", "rb") as f:
-        while chunk := await f.read(8192):
-            yield chunk
+    return await asyncio.gather(*[fetch_data(item) for item in items])
 ```
 
 ---
@@ -398,6 +439,6 @@ Building packages, publishing to PyPI, versioning -->
 
 ---
 
-**Skill Status**: INITIAL ✅
-**Line Count**: < 500 ✅
+**Skill Status**: COMPLETE ✅
+**Line Count**: < 450 ✅
 **Progressive Disclosure**: Resource files for details ✅

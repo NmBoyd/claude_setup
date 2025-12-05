@@ -1,5 +1,25 @@
 # Python Style Guide
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Severity Levels](#severity-levels)
+- [A. Type Hints](#a-type-hints)
+- [B. Docstrings](#b-docstrings)
+- [C. Imports](#c-imports)
+- [D. Naming Conventions](#d-naming-conventions)
+- [E. Error Handling](#e-error-handling)
+- [F. Logging](#f-logging)
+- [G. Classes and Data Structures](#g-classes-and-data-structures)
+- [H. Context Managers and Resources](#h-context-managers-and-resources)
+- [I. Testing](#i-testing)
+- [J. TODO Comments and Temporary Code](#j-todo-comments-and-temporary-code)
+- [Quick Reference](#quick-reference)
+- [Tools Configuration](#tools-configuration)
+- [Related Resources](#related-resources)
+
+---
+
 ## Overview
 
 We follow the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html) and [PEP 8](https://peps.python.org/pep-0008/) with the additional rules documented below.
@@ -143,10 +163,10 @@ from numpy import array, zeros, ones
 from robot.utils import normalize_angle, clamp
 ```
 
-**CONSIDER** using `from __future__ import annotations` for forward references.
+**DO** use `from __future__ import annotations` at the top of every file.
 
 ```python
-from __future__ import annotations
+from __future__ import annotations  # Always first import
 
 from dataclasses import dataclass
 
@@ -291,23 +311,28 @@ logger.debug(f"Processing {len(items)} items: {items}")
 
 ## G. Classes and Data Structures
 
-**DO** use `@dataclass` for simple data containers.
+**DO** use Pydantic v2 `BaseModel` for data models (preferred).
 
 ```python
-from dataclasses import dataclass, field
+from __future__ import annotations
+from pydantic import BaseModel, Field, field_validator
 
-@dataclass
-class JointState:
-    """Represents the state of a single joint."""
+class JointCommand(BaseModel):
+    """Command to send to a joint with validation."""
 
-    joint_id: int
-    position: float
-    velocity: float
-    effort: float = 0.0
-    timestamp: float = field(default_factory=time.time)
+    joint_id: int = Field(ge=0, description="Joint identifier")
+    position: float = Field(description="Target position in radians")
+    velocity: float = Field(default=1.0, gt=0, description="Velocity limit")
+
+    @field_validator("position")
+    @classmethod
+    def validate_position(cls, v: float) -> float:
+        if not -3.14159 <= v <= 3.14159:
+            raise ValueError("Position must be within [-π, π]")
+        return v
 ```
 
-**CONSIDER** using `pydantic.BaseModel` when you need validation.
+**CONSIDER** using `@dataclass` for simple internal data without validation.
 
 ```python
 from pydantic import BaseModel, Field, field_validator
@@ -454,43 +479,54 @@ CALIBRATION_OFFSET = 0.05
 
 | Rule | Level | Summary |
 |------|-------|---------|
+| `from __future__ import annotations` | **DO** | First import in every file |
 | Type hints on public APIs | **DO** | All public functions/methods |
 | Google-style docstrings | **DO** | Modules, classes, public functions |
+| Pydantic v2 for data models | **DO** | Preferred over dataclasses |
 | Organized imports | **DO** | stdlib / third-party / local |
 | Wildcard imports | **DO NOT** | Never `from x import *` |
-| Specific exceptions | **DO** | Catch specific, define custom |
-| Bare except | **DO NOT** | Never `except:` |
+| Specific exceptions | **DO** | Catch specific, define in exceptions.py |
+| Bare except | **DO NOT** | Never `except:` or `except Exception` |
 | Logging over print | **DO** | Use `logging` module |
-| Dataclasses for data | **DO** | Simple containers |
 | Mutable default args | **DO NOT** | Use `None` default |
-| Context managers | **DO** | For all resources |
-| pytest for testing | **DO** | With fixtures and parametrize |
+| Context managers | **DO** | For all resources (try/finally for async) |
+| pytest for testing | **DO** | Test files mirror source structure |
 | TODO with Jira ticket | **DO** | `TODO(SWC-123)` format |
 
 ---
 
 ## Tools Configuration
 
-### pyproject.toml
+### ruff.toml
 
 ```toml
-[tool.ruff]
-line-length = 100
-target-version = "py311"
+# Ruff configuration - 96-char lines, double quotes, sorted imports
+line-length = 96
+target-version = "py312"
 
-[tool.ruff.lint]
+[lint]
 select = [
     "E",    # pycodestyle errors
     "W",    # pycodestyle warnings
     "F",    # pyflakes
-    "I",    # isort
+    "I",    # isort (sorted imports)
     "B",    # flake8-bugbear
     "C4",   # flake8-comprehensions
     "UP",   # pyupgrade
 ]
 
+[format]
+quote-style = "double"
+```
+
+### pyproject.toml
+
+```toml
+[project]
+requires-python = ">=3.12"
+
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 strict = true
 warn_return_any = true
 warn_unused_ignores = true

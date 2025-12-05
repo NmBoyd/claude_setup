@@ -1,5 +1,18 @@
 # Structural Design Patterns
 
+## Table of Contents
+
+- [Adapter](#adapter)
+- [Decorator](#decorator)
+- [Facade](#facade)
+- [Composite](#composite)
+- [Proxy](#proxy)
+- [Bridge](#bridge)
+- [Quick Reference](#quick-reference)
+- [Related Resources](#related-resources)
+
+---
+
 Patterns that deal with object composition and relationships.
 
 ---
