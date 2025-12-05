@@ -1,6 +1,3 @@
 [submodule "3rd_party/awesome-claude-code-plugins"]
 	path = 3rd_party/awesome-claude-code-plugins
 	url = https://github.com/ccplugins/awesome-claude-code-plugins.git
-[submodule "3rd_party/claude-code-infrastructure-showcase"]
-	path = 3rd_party/claude-code-infrastructure-showcase
-	url = https://github.com/diet103/claude-code-infrastructure-showcase.git
