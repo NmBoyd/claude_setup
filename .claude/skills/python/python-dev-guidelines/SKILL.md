@@ -370,7 +370,10 @@ async def stream_data() -> AsyncIterator[bytes]:
 
 ## Resource Files
 
-### [project-setup.md](resources/project-setup.md)
+### [style-guide.md](resources/style-guide.md)
+Google Python Style Guide + PEP 8 practices, naming, docstrings, imports
+
+<!-- ### [project-setup.md](resources/project-setup.md)
 pyproject.toml, poetry, pip, virtual environments
 
 ### [typing-guide.md](resources/typing-guide.md)
@@ -383,7 +386,7 @@ pytest fixtures, mocking, parameterization, coverage
 asyncio, aiohttp, async context managers
 
 ### [packaging.md](resources/packaging.md)
-Building packages, publishing to PyPI, versioning
+Building packages, publishing to PyPI, versioning -->
 
 ---
 

@@ -1,4 +1,4 @@
-# Apptronik C++ Style Guide
+# C++ Style Guide
 
 ## Overview
 
