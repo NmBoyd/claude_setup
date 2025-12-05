@@ -1,9 +1,7 @@
 {
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
-    "mysql",
-    "sequential-thinking",
-    "playwright"
+    "sequential-thinking"
   ],
   "permissions": {
     "allow": [
@@ -25,31 +23,97 @@
           }
         ]
       }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|MultiEdit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/post-tool-use-tracker.sh"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/tsc-check.sh"
-          },
-          {
-            "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/trigger-build-resolver.sh"
-          }
-        ]
-      }
     ]
-  }
+  },
+  "enabledPlugins": {
+    "agent-sdk-dev@awesome-claude-code-plugins": true,
+    "pr-review-toolkit@awesome-claude-code-plugins": true,
+    "commit-commands@awesome-claude-code-plugins": true,
+    "feature-dev@awesome-claude-code-plugins": true,
+    "security-guidance@awesome-claude-code-plugins": true,
+    "ai-engineer@awesome-claude-code-plugins": true,
+    "api-integration-specialist@awesome-claude-code-plugins": true,
+    "backend-architect@awesome-claude-code-plugins": true,
+    "code-architect@awesome-claude-code-plugins": true,
+    "desktop-app-dev@awesome-claude-code-plugins": true,
+    "enterprise-integrator-architect@awesome-claude-code-plugins": true,
+    "flutter-mobile-app-dev@awesome-claude-code-plugins": false,
+    "frontend-developer@awesome-claude-code-plugins": false,
+    "mobile-app-builder@awesome-claude-code-plugins": false,
+    "project-curator@awesome-claude-code-plugins": true,
+    "python-expert@awesome-claude-code-plugins": true,
+    "rapid-prototyper@awesome-claude-code-plugins": true,
+    "react-native-dev@awesome-claude-code-plugins": true,
+    "vision-specialist@awesome-claude-code-plugins": true,
+    "web-dev@awesome-claude-code-plugins": true,
+    "api-tester@awesome-claude-code-plugins": true,
+    "bug-detective@awesome-claude-code-plugins": true,
+    "code-review@awesome-claude-code-plugins": true,
+    "code-review-assistant@awesome-claude-code-plugins": true,
+    "code-reviewer@awesome-claude-code-plugins": true,
+    "database-performance-optimizer@awesome-claude-code-plugins": true,
+    "debug-session@awesome-claude-code-plugins": true,
+    "debugger@awesome-claude-code-plugins": true,
+    "double-check@awesome-claude-code-plugins": true,
+    "optimize@awesome-claude-code-plugins": true,
+    "performance-benchmarker@awesome-claude-code-plugins": true,
+    "refractor@awesome-claude-code-plugins": true,
+    "test-file@awesome-claude-code-plugins": true,
+    "test-results-analyzer@awesome-claude-code-plugins": true,
+    "test-writer-fixer@awesome-claude-code-plugins": true,
+    "unit-test-generator@awesome-claude-code-plugins": true,
+    "deployment-engineer@awesome-claude-code-plugins": true,
+    "devops-automator@awesome-claude-code-plugins": true,
+    "infrastructure-maintainer@awesome-claude-code-plugins": true,
+    "monitoring-observability-specialist@awesome-claude-code-plugins": true,
+    "n8n-workflow-builder@awesome-claude-code-plugins": true,
+    "angelos-symbo@awesome-claude-code-plugins": true,
+    "ceo-quality-controller-agent@awesome-claude-code-plugins": true,
+    "claude-desktop-extension@awesome-claude-code-plugins": true,
+    "lyra@awesome-claude-code-plugins": true,
+    "model-context-protocol-mcp-expert@awesome-claude-code-plugins": true,
+    "problem-solver-specialist@awesome-claude-code-plugins": true,
+    "studio-coach@awesome-claude-code-plugins": false,
+    "ultrathink@awesome-claude-code-plugins": true,
+    "analyze-codebase@awesome-claude-code-plugins": true,
+    "changelog-generator@awesome-claude-code-plugins": true,
+    "codebase-documenter@awesome-claude-code-plugins": true,
+    "context7-docs-fetcher@awesome-claude-code-plugins": true,
+    "documentation-generator@awesome-claude-code-plugins": true,
+    "generate-api-docs@awesome-claude-code-plugins": true,
+    "openapi-expert@awesome-claude-code-plugins": true,
+    "update-claudemd@awesome-claude-code-plugins": true,
+    "analyze-issue@awesome-claude-code-plugins": true,
+    "bug-fix@awesome-claude-code-plugins": true,
+    "commit@awesome-claude-code-plugins": true,
+    "create-pr@awesome-claude-code-plugins": true,
+    "create-pull-request@awesome-claude-code-plugins": true,
+    "create-worktrees@awesome-claude-code-plugins": true,
+    "fix-github-issue@awesome-claude-code-plugins": true,
+    "fix-issue@awesome-claude-code-plugins": true,
+    "fix-pr@awesome-claude-code-plugins": true,
+    "github-issue-fix@awesome-claude-code-plugins": true,
+    "husky@awesome-claude-code-plugins": false,
+    "pr-issue-resolve@awesome-claude-code-plugins": true,
+    "pr-review@awesome-claude-code-plugins": true,
+    "update-branch-name@awesome-claude-code-plugins": true,
+    "ai-ethics-governance-specialist@awesome-claude-code-plugins": true,
+    "audit@awesome-claude-code-plugins": true,
+    "compliance-automation-specialist@awesome-claude-code-plugins": true,
+    "data-privacy-engineer@awesome-claude-code-plugins": true,
+    "enterprise-security-reviewer@awesome-claude-code-plugins": true,
+    "legal-advisor@awesome-claude-code-plugins": true,
+    "legal-compliance-checker@awesome-claude-code-plugins": true,
+    "discuss@awesome-claude-code-plugins": true,
+    "explore@awesome-claude-code-plugins": true,
+    "plan@awesome-claude-code-plugins": true,
+    "planning-prd-agent@awesome-claude-code-plugins": true,
+    "prd-specialist@awesome-claude-code-plugins": true,
+    "project-shipper@awesome-claude-code-plugins": true,
+    "sprint-prioritizer@awesome-claude-code-plugins": true,
+    "studio-producer@awesome-claude-code-plugins": false,
+    "tool-evaluator@awesome-claude-code-plugins": true,
+    "workflow-optimizer@awesome-claude-code-plugins": true
+  },
+  "alwaysThinkingEnabled": true
 }
