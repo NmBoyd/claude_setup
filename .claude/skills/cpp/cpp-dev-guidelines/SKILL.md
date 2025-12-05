@@ -375,8 +375,13 @@ TEST(WidgetDeathTest, NullPointerCrashes) {
 ---
 
 ## Resource Files
-[style-guide.md](resources/style-guide.md)
-Modern C++ practices, formatting, style guide
+
+### [style-guide.md](resources/style-guide.md)
+Google C++ Style Guide + Apptronik rules, TODO comments, error handling
+
+### [idioms.md](resources/idioms.md)
+C++ idioms: RAII, PIMPL, CRTP, Copy-and-Swap, SFINAE, Type Erasure, NVI
+
 <!-- ### [cmake-guide.md](resources/cmake-guide.md)
 Modern CMake patterns, find_package, FetchContent
 

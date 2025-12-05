@@ -346,6 +346,52 @@
                     "captureMessage"
                 ]
             }
+        },
+        "design-patterns": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "medium",
+            "description": "Software design patterns for Python and C++",
+            "promptTriggers": {
+                "keywords": [
+                    "design pattern",
+                    "factory pattern",
+                    "factory method",
+                    "abstract factory",
+                    "builder pattern",
+                    "singleton",
+                    "adapter pattern",
+                    "decorator pattern",
+                    "facade pattern",
+                    "strategy pattern",
+                    "observer pattern",
+                    "command pattern",
+                    "creational pattern",
+                    "structural pattern",
+                    "behavioral pattern",
+                    "gang of four",
+                    "GoF"
+                ],
+                "intentPatterns": [
+                    "(implement|use|apply|create).*?(factory|builder|singleton|adapter|decorator|facade|strategy|observer|command)",
+                    "(design pattern|pattern).*?(for|to|that)",
+                    "(how to|best way).*?(decouple|abstract|extend|compose)",
+                    "(refactor|improve).*?(using|with).*?pattern"
+                ]
+            },
+            "fileTriggers": {
+                "contentPatterns": [
+                    "Factory",
+                    "Builder",
+                    "Singleton",
+                    "Adapter",
+                    "Decorator",
+                    "Facade",
+                    "Strategy",
+                    "Observer",
+                    "Command"
+                ]
+            }
         }
     },
     "notes": {
