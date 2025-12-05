@@ -6,7 +6,9 @@
       "Bash(find:*)",
       "Bash(python3:*)",
       "Bash(wc:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(cat:*)",
+      "Bash(./setup.sh)"
     ],
     "deny": [],
     "ask": []
